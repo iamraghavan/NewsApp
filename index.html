@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>News Blog</title>
+  <link rel="stylesheet" href="https://unpkg.com/chakra-ui/dist/chakra.min.css">
+  <style>
+    .news-card {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .news-image {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .news-title {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .news-summary {
+      font-size: 14px;
+      margin: 10px 0;
+    }
+
+    .news-link {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .news-link:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header class="chakra-header" style="background-color: #007bff; padding: 10px; color: #fff; text-align: center;">
+    <h1 class="chakra-heading">News Blog</h1>
+  </header>
+
+  <div class="chakra-container" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+    <div id="news-container"></div>
+  </div>
+
+  <footer class="chakra-footer" style="background-color: #f5f5f5; padding: 10px; text-align: center;">
+    <p class="chakra-text">© 2023 News Blog. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Fetch news data
+    const url = 'https://newsapi.org/v2/top-headlines?country=in&apiKey=dd47df614c2e429f85847d6a84da31e5';
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        displayNews(data.articles);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    function displayNews(newsData) {
+      var newsContainer = document.getElementById('news-container');
+
+      // Iterate over each news article
+      for (var i = 0; i < newsData.length; i++) {
+        var newsArticle = newsData[i];
+        var title = newsArticle.title;
+        var description = newsArticle.description;
+        var imageURL = newsArticle.urlToImage;
+        var articleURL = newsArticle.url;
+
+        // Create elements for each news article
+        var newsCard = document.createElement('div');
+        newsCard.className = 'news-card chakra-card';
+        var newsImage = document.createElement('img');
+        newsImage.className = 'news-image';
+        newsImage.src = imageURL;
+        var newsTitle = document.createElement('h2');
+        newsTitle.className = 'news-title chakra-heading';
+        newsTitle.textContent = title;
+        var newsSummary = document.createElement('p');
+        newsSummary.className = 'news-summary chakra-text';
+        newsSummary.textContent = description;
+        var newsLink = document.createElement('a');
+        newsLink.className = 'news-link chakra-link';
+        newsLink.href = articleURL;
+        newsLink.textContent = 'Read More';
+
+        // Append elements to the news container
+        newsCard.appendChild(newsImage);
+        newsCard.appendChild(newsTitle);
+        newsCard.appendChild(newsSummary);
+        newsCard.appendChild(newsLink);
+        newsContainer.appendChild(newsCard);
+      }
+    }
+  </script>
+</body>
+</html>
